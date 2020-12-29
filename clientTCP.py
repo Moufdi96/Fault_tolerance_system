@@ -13,11 +13,14 @@ class TCPClient :
         
     def connectToServer(self,port):
         # Connect the socket to the port where the server is listening
-        server_address = ('localhost', port)
-        self.port = port
-        print('connecting to {} port {}'.format(*server_address))
-        self._opened = self.sock.connect_ex(server_address)
-        #print(self.isConnected())   
+        while(True):
+            server_address = ('localhost', port)
+            self.port = port
+            #print('connecting to {} port {}'.format(*server_address))
+            self._opened = self.sock.connect_ex(server_address)
+            if (self._opened == 0):
+                break
+            #print(self.isConnected())   
         
     def disconnectFromServer(self):
         #self.sock.shutdown()   

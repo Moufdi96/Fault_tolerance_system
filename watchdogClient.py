@@ -22,8 +22,7 @@ class WatchdogClient(TCPClient) :
                 # Send data   
 
                     print('sending {!r} to {}'.format(message,self.port))
-                    self.sock.sendall(message.encode())
-                    
+                    self.sock.sendall(message.encode())                    
                     self.start_timer()
                     #if self.timeout:
                     #    break

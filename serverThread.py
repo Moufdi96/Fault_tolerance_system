@@ -30,11 +30,20 @@ class ServerTCP :
         try:
             print('connection from', client_address)
             # Receive the data in small chunks and retransmit it
-            while True:
-            
-                temp = (connection.recv(32)).decode("utf-8")
-                if(temp!=""):
-                    ServerTCP.data = temp.lower()
+            while True:  
+                temp = (connection.recv(32)).decode("utf-8")  
+                try:  
+                    data = float(temp)
+                except:
+                    data = temp
+
+                print(type(data))
+                if(temp!= None):
+                    if(data.__class__ == str):
+                        ServerTCP.data = data.lower()
+                    else:
+                        ServerTCP.data = data
+
                     print('received from {} : {}'.format(client_address,ServerTCP.data))
                     response = 'i am alive'
                     print('sending {!r}'.format(response))

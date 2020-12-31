@@ -1,4 +1,3 @@
 from serverMachine import ServerMachine
 
-m = ServerMachine('server1')
-m.startServer(2500)
+ServerMachine('server1', 'localhost', 2500)

@@ -2,6 +2,7 @@ import threading
 import socket
 import sys
 import time
+import os
 
 class TCPClient :
     def __init__(self):
@@ -11,10 +12,11 @@ class TCPClient :
         self.port = 0
         self.data = ''
         
-    def connectToServer(self,port):
+    def connectToServer(self,IP,port):
         # Connect the socket to the port where the server is listening
         while(True):
-            server_address = ('localhost', port)
+            server_address = (IP, port)
+            server_address = 
             self.port = port
             #print('connecting to {} port {}'.format(*server_address))
             self._opened = self.sock.connect_ex(server_address)
@@ -26,8 +28,7 @@ class TCPClient :
         #self.sock.shutdown()   
         self._opened = -1
         self.sock.close()
-        
-        #os.system('fuser -k '+ str(self.port)+'/tcp')
+        os.system('fuser -k '+ str(self.port)+'/tcp')
     
     def isDisconnected(self):
         return self.sock._closed

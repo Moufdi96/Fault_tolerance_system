@@ -6,12 +6,12 @@ import os
 from random import uniform
 from clientTCP import TCPClient
 
-DELAY = 2
+DELAY = 4
 
 class SensorClient(TCPClient) :
     def __init__(self,priority = "primary"):
         TCPClient.__init__(self)
-        self.restart = True
+        
 
     def send(self):
         while True :

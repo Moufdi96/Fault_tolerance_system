@@ -5,7 +5,7 @@ import time
 import os
 from clientTCP import TCPClient
 
-TIMEOUT = 2
+TIMEOUT = 4
 
 class WatchdogClient(TCPClient) :
     def __init__(self,priority = "primary"):
@@ -49,7 +49,6 @@ class WatchdogClient(TCPClient) :
         #turn on the backup server 
         print('Switching to backup...')
         print('Turning on backup...')
-        #os.system(self.primary_server+".pys") 
 
     def getPriority(self):
         return self.priority

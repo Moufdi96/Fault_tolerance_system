@@ -16,19 +16,22 @@ class SensorClient(TCPClient) :
         while True :
             if self.isConnected() == 0 and self.isDisconnected() == False:
                 try:
-                # Send data   
-                    data = str(self.dataAcquisition())
+                # Send data
+                    data = str(SensorClient.dataAcquisition())
                     print('sending {!r} to {}'.format(data,self.port))
                     self.sock.sendall(data.encode())
                     
                 except:
                     pass
             self.start_timer()
-
-    def dataAcquisition(self):
-        data = uniform(-10000,10000)
-        return data
      
     def start_timer(self):
         time.sleep(DELAY)
+    
+    def receive(self):
+        pass
 
+    @staticmethod
+    def dataAcquisition():
+        data = uniform(-10000,10000)
+        return data

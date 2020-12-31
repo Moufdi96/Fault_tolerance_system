@@ -26,38 +26,6 @@ class ServerTCP :
             serverThread = threading.Thread(target=receiveFunc,args=self.sock.accept())
             serverThread.start()
 
-    #def receiveData(self,connection,client_address):
-    #    try:
-    #        print('connection from', client_address)
-    #        # Receive the data in small chunks and retransmit it
-    #        while True:  
-    #            temp = (connection.recv(32)).decode("utf-8")  
-    #            #print(temp)
-    #            
-    #            try:  
-    #                data = float(temp)
-    #            except:
-    #                data = temp
-#
-    #            #print(type(data))
-    #            if(data!= None):
-    #                if(data.__class__ == str):
-    #                    data = data.lower()
-    #                else:
-    #                    self.data.append(data)
-    #                    print(self.data)
-    #                    if len(self.data) >= ServerTCP.SLIDING_WINDOW_LENGHT:  
-    #                        self.data.pop(0)
-    #                        #print("*****************")
-    #                    
-#
-    #                #print('received from {} : {}'.format(client_address,data))
-    #                #response = 'i am alive'
-    #                #print('sending {!r}'.format(response))
-    #                #connection.sendall(response.encode())
-    #    except:
-    #        pass
-
         def getData(self):
             return self.data
 

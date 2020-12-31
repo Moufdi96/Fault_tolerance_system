@@ -7,12 +7,11 @@ PATH_STABLE_MEMORY = "/home/moufdi/GitHubProjects/Projet_mutlithreading/stableMe
 
 class ServerMachine(ServerTCP):
 
-    def __init__(self, serverID, IP, port):
+    def __init__(self, serverID):
         ServerTCP.__init__(self)
         self.server1ID = serverID
         self.priority = ''  #primary or backup 
         self.recover_data()
-        self.startServer(IP,port,self.receiveData)
         #self.thread_process_data = threading.Thread(target=self.process_data)
         #self.thread_process_data.start()
     def process_data(self):

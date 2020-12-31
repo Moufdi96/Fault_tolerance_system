@@ -1,3 +1,4 @@
 from serverMachine import ServerMachine
 
-ServerMachine('server2', 'localhost', 3024)
+server2 = ServerMachine('server2')
+server2.startServer('localhost',3024,server2.receiveData)

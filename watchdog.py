@@ -63,7 +63,7 @@ class WatchDog:
     
     def reinit_client2_threads(self):
         self.client2 = WatchdogClient("primary")
-        thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['192.168.0.19',3024])
+        thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['localhost',3024])
         thread_send2 = threading.Thread(target=self.client2.send)
         thread_receive2 = threading.Thread(target=self.client2.receive) 
         return thread_client2, thread_send2, thread_receive2

@@ -12,7 +12,6 @@ class SensorClient(TCPClient) :
     def __init__(self,priority = "primary"):
         TCPClient.__init__(self)
         
-
     def send(self):
         while True :
             if self.isConnected() == 0 and self.isDisconnected() == False:

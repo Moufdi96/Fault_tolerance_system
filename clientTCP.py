@@ -16,7 +16,6 @@ class TCPClient :
         # Connect the socket to the port where the server is listening
         while(True):
             server_address = (IP, port)
-            server_address = 
             self.port = port
             #print('connecting to {} port {}'.format(*server_address))
             self._opened = self.sock.connect_ex(server_address)

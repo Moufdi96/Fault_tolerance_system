@@ -15,7 +15,7 @@ class Sensor:
         thread_send1.start()
         thread_receive1.start()
 
-        thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['192.168.0.19',3024])
+        thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['localhost',3024])
         thread_send2 = threading.Thread(target=self.client2.send)
         thread_receive2 = threading.Thread(target=self.client2.receive)
         thread_client2.start()

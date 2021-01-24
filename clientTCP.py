@@ -42,7 +42,11 @@ class TCPClient :
                 if(self.data != ''):   
                     print('received {!r} from {}'.format(self.data,self.port))    
 
-    def send(self):
-        while True :
-            if self.isConnected() == 0 and self.isDisconnected() == False:
+    def send(self,msg):
+        if self.isConnected() == 0 and self.isDisconnected() == False:
+            message = msg  
+            try: 
+                self.sock.sendall(message.encode())
+            except:
                 pass
+                

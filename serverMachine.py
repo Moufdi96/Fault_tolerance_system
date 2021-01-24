@@ -1,4 +1,4 @@
-from serverThread import ServerTCP
+from serverTCP import ServerTCP
 import threading
 import numpy as np
 from stableMemory import loadJsonFile, saveData
@@ -6,7 +6,6 @@ from stableMemory import loadJsonFile, saveData
 PATH_STABLE_MEMORY = "/home/moufdi/GitHubProjects/Projet_mutlithreading/stableMemory.json"
 
 class ServerMachine(ServerTCP):
-
     def __init__(self, serverID):
         ServerTCP.__init__(self)
         self.server1ID = serverID
@@ -36,7 +35,6 @@ class ServerMachine(ServerTCP):
             print(self.data)
             self.data.pop(0)
 
-
     def receiveData(self,connection,client_address):
         try:
             print('connection from', client_address)
@@ -52,22 +50,22 @@ class ServerMachine(ServerTCP):
 
                 #print(type(data))
                 if(data!= None):
-                    if(data.__class__ == str):
-                        data = data.lower()
+                    print('received from {} : {}'.format(client_address,data))
+                    if data.__class__ == str:
+                        #data = data.lower()
+                        if data == 'Are you still alive ?':
+                            response = 'i am alive'
+                            print('sending {!r}'.format(response))
+                            connection.sendall(response.encode())
                     else:
+                        response = 'data received'
+                        print('sending {!r}'.format(response))
+                        connection.sendall(response.encode())
                         self.data.append(data)
                         print(self.data)
                         if len(self.data) >= ServerTCP.SLIDING_WINDOW_LENGHT: 
-                            self.process_data() 
-                            self.data.pop(0)
-                        
-                            #print("*****************")
-                        
-
-                    print('received from {} : {}'.format(client_address,data))
-                    response = 'i am alive'
-                    print('sending {!r}'.format(response))
-                    connection.sendall(response.encode())
+                            self.process_data()
+                            self.data.pop(0)      
         except:
             pass
     

@@ -1,21 +1,24 @@
 from sensorClient import SensorClient
+from serverTCP import ServerTCP
 import threading
 import time
-
-
 
 class Sensor:
     def __init__(self):
         self.client1 = SensorClient()
         self.client2 = SensorClient()
+        self.primary_server = 'server1'
+        self.backup_server = 'server2' 
         self.thread_client1 = threading.Thread(target=self.client1.connectToServer,args=['localhost',2500])
         self.thread_send1 = threading.Thread(target=self.client1.send)
         self.thread_receive1 = threading.Thread(target=self.client1.receive)
-        self.thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['localhost',3024])
-        self.thread_send2 = threading.Thread(target=self.client2.send)
-        self.thread_receive2 = threading.Thread(target=self.client2.receive)
-        
 
+        self.thread_updateCurrentPrimaryServer = threading.Thread(target=self.updateCurrentPrimaryServer)
+        
+        #self.thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['localhost',3024])
+        #self.thread_send2 = threading.Thread(target=self.client2.send)
+        #self.thread_receive2 = threading.Thread(target=self.client2.receive)
+        
     #def reinit_threads(self):
     #    while True:
     #        if self.client2.isConnected() == 0:
@@ -29,12 +32,58 @@ class Sensor:
     #            thread_receive1.start()
     #        elif
 
+    def updateCurrentPrimaryServer(self):
+        server = ServerTCP()
+        print('hhhhhhhhhhhhhhh')
+        #server.startServer('localhost',2550,server.receive)
+        #print('wesh !')
+        conn = server.startServer1('localhost',2550)
+        print(conn)
+        currentRunningServer = self.primary_server           
+        while(True):
+            print(currentRunningServer)
+            currentRunningServer = server.receive(conn) #server.data
+            if self.primary_server == 'server1' and currentRunningServer == 'server2':
+                self.client1.disconnectFromServer()
+                self.invertPriority()
+                threads = self.reinit_client2_threads()
+                threads[0].start()
+                threads[1].start()
+                threads[2].start()
+            elif self.primary_server == 'server2' and currentRunningServer == 'server1':
+                self.client2.disconnectFromServer()
+                self.invertPriority()
+                threads = self.reinit_client1_threads()
+                threads[0].start()
+                threads[1].start()
+                threads[2].start()
+
+                
+    
+    def invertPriority(self):
+        self.primary_server, self.backup_server = self.backup_server, self.primary_server
+    
+    def reinit_client1_threads(self):
+        self.client1 = SensorClient()
+        thread_client1 = threading.Thread(target=self.client1.connectToServer,args=['localhost',2500])
+        thread_send1 = threading.Thread(target=self.client1.send)
+        thread_receive1 = threading.Thread(target=self.client1.receive) 
+        return thread_client1, thread_send1, thread_receive1
+    
+    def reinit_client2_threads(self):
+        self.client2 = SensorClient()
+        thread_client2 = threading.Thread(target=self.client2.connectToServer,args=['localhost',3024])
+        thread_send2 = threading.Thread(target=self.client2.send)
+        thread_receive2 = threading.Thread(target=self.client2.receive) 
+        return thread_client2, thread_send2, thread_receive2 
+
     def start(self):
         self.thread_client1.start()
         self.thread_send1.start()
         self.thread_receive1.start()
-        self.thread_client2.start()
-        self.thread_send2.start()
-        self.thread_receive2.start()
+        self.thread_updateCurrentPrimaryServer.start()
+        #self.thread_client2.start()
+        #self.thread_send2.start()
+        #self.thread_receive2.start()
 
 

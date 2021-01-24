@@ -8,12 +8,13 @@ from clientTCP import TCPClient
 
 DELAY = 4
 
-class SensorClient(TCPClient) :
+class SensorClient(TCPClient) : 
     def __init__(self,priority = "primary"):
         TCPClient.__init__(self)
         
     def send(self):
         while True :
+            self.data =''
             if self.isConnected() == 0 and self.isDisconnected() == False:
                 try:
                 # Send data
@@ -24,12 +25,25 @@ class SensorClient(TCPClient) :
                 except:
                     pass
             self.start_timer()
+            #if self.data != 'data received':
+            #    self.timeout_event()
+            #    break
      
     def start_timer(self):
         time.sleep(DELAY)
     
-    def receive(self):
-        pass
+
+    #def timeout_event(self):
+    #    self._opened = -1
+    #    print('Oups ! primary server dead')
+    #    self.priority = "backup"
+    #    
+    #    #disconnect from the dead server  
+    #    print('disconnect from the dead server..')
+    #    self.disconnectFromServer()
+    #    #switching data transmission to backup server 
+    #    print('data transmission switched to backup')
+
 
     @staticmethod
     def dataAcquisition():

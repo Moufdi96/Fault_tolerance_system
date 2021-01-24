@@ -15,8 +15,6 @@ class WatchdogClient(TCPClient) :
     def send(self):
         while True :
             if self.isConnected() == 0 and self.isDisconnected() == False:
-                #print(self.isConnected())
-                #print(self.isDisconnected())
                 message = 'Are you still alive ?'
                 try:
                 # Send data   

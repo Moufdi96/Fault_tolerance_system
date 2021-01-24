@@ -10,10 +10,9 @@ class ServerTCP :
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.data = ''
     
-    def startServer(self, IP, port, receiveFunc):
-        print(port)        
+    def startServer(self, IP, port, receiveFunc):      
         # Bind the socket to the port
-        os.system('fuser -k '+ str(port)+'/tcp')
+        #os.system('fuser -k '+ str(port)+'/tcp')
         server_address = (IP, port)
         print('starting up on {} port {}'.format(*server_address))
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -24,7 +23,6 @@ class ServerTCP :
         print('waiting for a connection')
         while True:
             #connection, client_address = self.sock.accept()
-            print('jjjjjjjjj')
             serverThread = threading.Thread(target=receiveFunc,args=self.sock.accept())
             serverThread.start()
             if port == 2550:

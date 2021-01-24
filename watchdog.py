@@ -9,7 +9,10 @@ class WatchDog:
         
         self.client1 = WatchdogClient("primary")
         self.client2 = WatchdogClient("backup")
-        self.client3 = TCPClient()   #this client is used to notify the sensor in case the primary server has crushed 
+        self.client3 = TCPClient()   #this client is used to notify the sensor in case the primary server has crushed
+        #TCPClient.freeServerAddress(2500)
+        #TCPClient.freeServerAddress(2550)
+        #TCPClient.freeServerAddress(3024)
         self.primary_server = 'server1'
         self.backup_server = 'server2'
         self.thread_client1 = threading.Thread(target=self.client1.connectToServer,args=['localhost',2500])

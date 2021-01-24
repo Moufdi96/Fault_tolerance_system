@@ -33,10 +33,9 @@ class Sensor:
     #        elif
 
     def updateCurrentPrimaryServer(self):
+        from clientTCP import TCPClient
+        TCPClient.freeServerAddress(2550)
         server = ServerTCP()
-        print('hhhhhhhhhhhhhhh')
-        #server.startServer('localhost',2550,server.receive)
-        #print('wesh !')
         conn = server.startServer1('localhost',2550)
         print(conn)
         currentRunningServer = self.primary_server           
@@ -44,19 +43,29 @@ class Sensor:
             print(currentRunningServer)
             currentRunningServer = server.receive(conn) #server.data
             if self.primary_server == 'server1' and currentRunningServer == 'server2':
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!! Oups server1 has crushed !!!!!!!!!!!!!!!!!!!!!!!!')
+                print("\n")
+                print('shutting down data communication with primary server (server1).....')
                 self.client1.disconnectFromServer()
                 self.invertPriority()
                 threads = self.reinit_client2_threads()
+                print('Backup server launched.... switching data communication with backup (server2).....')
                 threads[0].start()
                 threads[1].start()
                 threads[2].start()
             elif self.primary_server == 'server2' and currentRunningServer == 'server1':
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!! Oups server2 has crushed !!!!!!!!!!!!!!!!!!!!!!!!')
+                print("\n")
+                print('shutting down data communication with primary server (server2).....')
                 self.client2.disconnectFromServer()
                 self.invertPriority()
                 threads = self.reinit_client1_threads()
+                print('Backup server launched.... switching data communication with backup (server1).....')
                 threads[0].start()
                 threads[1].start()
                 threads[2].start()
+
+                
 
                 
     
@@ -82,8 +91,5 @@ class Sensor:
         self.thread_send1.start()
         self.thread_receive1.start()
         self.thread_updateCurrentPrimaryServer.start()
-        #self.thread_client2.start()
-        #self.thread_send2.start()
-        #self.thread_receive2.start()
 
 

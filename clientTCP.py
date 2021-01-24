@@ -20,6 +20,7 @@ class TCPClient :
             self.port = port
             self._opened = self.sock.connect_ex(server_address)
             if (self._opened == 0):
+                print('connecting to {} port {} has been successful'.format(IP,port))
                 break
             #print(self.isConnected())   
         
@@ -27,7 +28,8 @@ class TCPClient :
         #self.sock.shutdown()   
         self._opened = -1
         self.sock.close()
-        os.system('fuser -k '+ str(self.port)+'/tcp')
+        TCPClient.freeServerAddress(self.port)
+        #os.system('fuser -k '+ str(self.port)+'/tcp')
     
     def isDisconnected(self):
         return self.sock._closed
@@ -49,4 +51,8 @@ class TCPClient :
                 self.sock.sendall(message.encode())
             except:
                 pass
+
+    @staticmethod
+    def freeServerAddress(port):
+        os.system('fuser -k '+ str(port)+'/tcp')
                 

@@ -32,7 +32,6 @@ class ServerMachine(ServerTCP):
         dataBase = loadJsonFile(PATH_STABLE_MEMORY)
         if len(dataBase) > 0: 
             self.data = dataBase[len(dataBase)-1][0]
-            print(self.data)
             self.data.pop(0)
 
     def receiveData(self,connection,client_address):

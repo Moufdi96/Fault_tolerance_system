@@ -8,15 +8,16 @@ class ServerTCP :
     SLIDING_WINDOW_LENGHT = 3
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_address = []
         self.data = ''
     
     def startServer(self, IP, port, receiveFunc):      
         # Bind the socket to the port
         #os.system('fuser -k '+ str(port)+'/tcp')
-        server_address = (IP, port)
-        print('starting up on {} port {}'.format(*server_address))
+        self.server_address = (IP, port)
+        print('starting up on {} port {}'.format(*self.server_address))
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.sock.bind(server_address)
+        self.sock.bind(self.server_address)
         # Listen for incoming connections
         self.sock.listen(3)
         # Wait for a connection

@@ -1,5 +1,6 @@
 from serverTCP import ServerTCP
 import threading
+from clientTCP import TCPClient 
 import numpy as np
 from stableMemory import loadJsonFile, saveData
 
@@ -13,14 +14,34 @@ class ServerMachine(ServerTCP):
         self.recover_data()
         #self.thread_process_data = threading.Thread(target=self.process_data)
         #self.thread_process_data.start()
+
     def process_data(self):
         #while True:
         if len(self.data) == ServerTCP.SLIDING_WINDOW_LENGHT:
-            #continue
-            mean = np.mean(self.data)
+            # ensuring Temporal redundancy
+            res_1 = self.computeMean(self.data)
+            res_2 = self.computeMean(self.data)
+            if res_1 == res_2:
+                print('mean value of the last {} acquired is {} :'.format(ServerTCP.SLIDING_WINDOW_LENGHT,res_1))
+                self.store_acquired_data(PATH_STABLE_MEMORY, self.data, res_1)
+            else: 
+                res_3 = self.computeMean(self.data)
+                # majority voting
+                if res_3 == res_1:
+                    print('mean value of the last {} acquired is {} :'.format(ServerTCP.SLIDING_WINDOW_LENGHT,res_1))
+                    self.store_acquired_data(PATH_STABLE_MEMORY, self.data, res_1)
+                elif res_3 == res_2:
+                    print('mean value of the last {} acquired is {} :'.format(ServerTCP.SLIDING_WINDOW_LENGHT,res_2))
+                    self.store_acquired_data(PATH_STABLE_MEMORY, self.data, res_2)
+                else: # server failed to obtain the correct value
+                    print("Service failed to produce the correct values..... " + self.server1ID + " needs to be repaired !!!")
+                    print("shutting down " + self.server1ID + ".....")
+                    self.sock.close()
+                    TCPClient.freeServerAddress(self.server_address[1])
+                    
+
             #print(self.data)
-            print('mean value of the last {} acquired is {} :'.format(ServerTCP.SLIDING_WINDOW_LENGHT,mean))
-            self.store_acquired_data(PATH_STABLE_MEMORY, self.data, mean)
+            
     
     def store_acquired_data(self, path, newDataVector, mean):
         saveData(path, newDataVector, mean)
@@ -67,5 +88,9 @@ class ServerMachine(ServerTCP):
                             self.data.pop(0)      
         except:
             pass
+
+    def computeMean(self,data):
+        mean = np.mean(self.data)
+        return mean
     
      

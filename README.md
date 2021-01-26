@@ -17,3 +17,6 @@ Open 4 terminals :
  * File serverMachine.py, line 24 =========> res_1 = self.computeMean(self.data,faulInjection=True)
  * File serverMachine.py, line 28 =========> res_2 = self.computeMean(self.data,faulInjection=True)
  
+ * Demo Video crash faluts (PBR) https://drive.google.com/file/d/1VGt7zKXr0LGdImqi_ZNt8o0n15Nc0YTb/view?usp=sharing
+ * Demo Video value faults (TR) https://drive.google.com/file/d/1c2tqJwIzyTHAIbkHaNM3j7J-SW-Ejovz/view?usp=sharing
+ 

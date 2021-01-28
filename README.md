@@ -3,6 +3,8 @@ The Service delivered by the servers is simply the mean computation of the last 
 
 Move to the project directory
 
+Change the path of the json file (stableMemory.json) with your own in the two files "stableMemory.py" and "serverMachine.py" (line 12 and 7 respectively)  
+
 Open 4 terminals :
 
 * Start the 'Primary server' in the 1st terminal using this command "python3 launch_server1.py"
